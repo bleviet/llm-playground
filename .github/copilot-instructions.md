@@ -109,7 +109,7 @@ class NewStrategy(BaseStrategy):
             return f"Error with {provider.name}: {e}"
 ```
 
-### When suggesting error handling:
+### When suggesting e rror handling:
 
 Follow the graceful degradation pattern from `summarize_webpage/core/summarizer.py`:
 

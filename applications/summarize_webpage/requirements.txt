@@ -1,0 +1,13 @@
+# Summarize Webpage Application Dependencies
+# Install llm_core first: cd ../../llm_core && pip install -e .
+
+# Application-specific dependencies
+playwright==1.55.0               # Browser automation for JavaScript-heavy sites
+beautifulsoup4==4.14.2          # HTML parsing and text extraction
+lxml==6.0.2                     # Fast XML/HTML parser
+rich==14.2.0                    # Beautiful terminal output
+
+# Development tools (optional)
+ipython==9.6.0                  # Enhanced interactive Python shell
+
+# After installing, run: python -m playwright install

@@ -1,0 +1,9 @@
+# LLM Core - Core Dependencies
+# Install with: pip install -r requirements.txt or uv pip install -r requirements.txt
+
+# Core LLM SDKs
+openai==2.5.0                    # OpenAI API SDK (also works with Ollama via compatibility)
+google-generativeai==0.8.5       # Google Gemini native SDK
+
+# Configuration & Environment
+python-dotenv==1.1.1            # Load API keys from .env files
