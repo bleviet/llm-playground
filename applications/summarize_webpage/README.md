@@ -131,13 +131,40 @@ GEMINI_API_KEY=your-gemini-key-here
 
 **Note**: Ollama runs locally and doesn't need an API key.
 
-### 4. Run the Example
+### 4. Run the Application
+
+The application now supports command-line arguments for flexible usage:
 
 ```bash
+# Show help and available options
+python summarize_webpage.py --help
+
+# Summarize default URL (https://www.anthropic.com) with all providers
 python summarize_webpage.py
+
+# Summarize a specific URL
+python summarize_webpage.py https://www.python.org
+
+# Use only OpenAI provider
+python summarize_webpage.py https://example.com --provider openai
+
+# Use short option for provider
+python summarize_webpage.py https://example.com -p gemini-native
+
+# Available provider options:
+#   - ollama         : Local Ollama LLM
+#   - openai         : OpenAI GPT models
+#   - gemini-openai  : Google Gemini via OpenAI-compatible API
+#   - gemini-native  : Google Gemini via native Google SDK
+#   - all            : All providers (default)
 ```
 
-This will fetch https://edwarddonner.com and generate summaries using all configured providers.
+**Command-line Interface Features:**
+- ✅ **URL Argument**: Pass any webpage URL to summarize
+- ✅ **Provider Selection**: Choose specific LLM provider(s)
+- ✅ **Validation**: Automatic URL format validation
+- ✅ **Rich Output**: Beautiful colored terminal output
+- ✅ **Flexible Options**: Short (`-p`) and long (`--provider`) options
 
 ## 📚 Code Walkthrough
 
