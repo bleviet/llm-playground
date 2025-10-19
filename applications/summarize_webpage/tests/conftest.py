@@ -13,11 +13,11 @@ def mock_openai_client():
     mock_response = Mock()
     mock_choice = Mock()
     mock_message = Mock()
-    
+
     mock_message.content = "This is a test summary."
     mock_choice.message = mock_message
     mock_response.choices = [mock_choice]
-    
+
     mock_client.chat.completions.create.return_value = mock_response
     return mock_client
 
@@ -28,7 +28,7 @@ def mock_gemini_client():
     mock_client = Mock()
     mock_response = Mock()
     mock_response.text = "This is a test summary from Gemini."
-    
+
     mock_client.generate_content.return_value = mock_response
     return mock_client
 
@@ -38,10 +38,10 @@ def sample_website_content():
     """Sample website content for testing."""
     return """
     About Python
-    
+
     Python is a programming language that lets you work quickly
     and integrate systems more effectively.
-    
+
     Latest News
     - Python 3.12 Released
     - New Features in Python

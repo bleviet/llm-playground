@@ -53,7 +53,7 @@ def integration_test_content():
 @pytest.mark.slow
 class TestOpenAIIntegration:
     """Integration tests for OpenAI provider with real API."""
-    
+
     def test_openai_summarization_works(
         self,
         skip_if_no_api_keys,
@@ -63,17 +63,17 @@ class TestOpenAIIntegration:
     ):
         """Test that OpenAI provider can generate real summaries."""
         skip_if_no_api_keys("openai")
-        
+
         provider = OpenAIProvider(model_name="gpt-4o-mini")  # Use cheaper model
         client = provider.get_client()
-        
+
         summary = provider.summarize(
             client=client,
             website_content=integration_test_content,
             system_prompt=sample_prompts["system_prompt"],
             user_prompt_prefix=sample_prompts["user_prompt_prefix"]
         )
-        
+
         # Validate the summary
         assert_valid_summary(summary)
         print(f"\n✅ OpenAI summary: {summary[:100]}...")
@@ -87,7 +87,7 @@ class TestOpenAIIntegration:
 @pytest.mark.slow
 class TestGeminiIntegration:
     """Integration tests for Gemini provider with real API."""
-    
+
     def test_gemini_with_openai_strategy(
         self,
         skip_if_no_api_keys,
@@ -97,23 +97,23 @@ class TestGeminiIntegration:
     ):
         """Test Gemini using OpenAI-compatible API."""
         skip_if_no_api_keys("gemini")
-        
+
         provider = GeminiProvider(
             strategy=OpenAIAPIStrategy(),
             model_name="gemini-2.0-flash-exp"
         )
         client = provider.get_client()
-        
+
         summary = provider.summarize(
             client=client,
             website_content=integration_test_content,
             system_prompt=sample_prompts["system_prompt"],
             user_prompt_prefix=sample_prompts["user_prompt_prefix"]
         )
-        
+
         assert_valid_summary(summary)
         print(f"\n✅ Gemini (OpenAI API) summary: {summary[:100]}...")
-    
+
     def test_gemini_with_native_strategy(
         self,
         skip_if_no_api_keys,
@@ -123,20 +123,20 @@ class TestGeminiIntegration:
     ):
         """Test Gemini using native Google SDK."""
         skip_if_no_api_keys("gemini")
-        
+
         provider = GeminiProvider(
             strategy=GeminiNativeStrategy(),
             model_name="gemini-2.0-flash-exp"
         )
         client = provider.get_client()
-        
+
         summary = provider.summarize(
             client=client,
             website_content=integration_test_content,
             system_prompt=sample_prompts["system_prompt"],
             user_prompt_prefix=sample_prompts["user_prompt_prefix"]
         )
-        
+
         assert_valid_summary(summary)
         print(f"\n✅ Gemini (Native SDK) summary: {summary[:100]}...")
 
@@ -149,25 +149,25 @@ class TestGeminiIntegration:
 class TestOllamaIntegration:
     """
     Integration tests for Ollama (local LLM).
-    
+
     Note: These require Ollama to be running locally.
     """
-    
+
     @pytest.fixture
     def skip_if_ollama_not_running(self):
         """Skip test if Ollama is not running."""
         import socket
-        
+
         def is_port_open(host, port):
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(1)
             result = sock.connect_ex((host, port))
             sock.close()
             return result == 0
-        
+
         if not is_port_open("localhost", 11434):
             pytest.skip("Ollama is not running on localhost:11434")
-    
+
     def test_ollama_summarization(
         self,
         skip_if_ollama_not_running,
@@ -178,14 +178,14 @@ class TestOllamaIntegration:
         """Test Ollama can generate summaries (if running)."""
         provider = OllamaProvider(model_name="llama3.2:latest")
         client = provider.get_client()
-        
+
         summary = provider.summarize(
             client=client,
             website_content=integration_test_content,
             system_prompt=sample_prompts["system_prompt"],
             user_prompt_prefix=sample_prompts["user_prompt_prefix"]
         )
-        
+
         assert_valid_summary(summary)
         print(f"\n✅ Ollama summary: {summary[:100]}...")
 
@@ -199,13 +199,13 @@ class TestOllamaIntegration:
 class TestCrossProviderComparison:
     """
     Compare outputs across multiple providers.
-    
+
     This is useful for:
     - Verifying all providers work
     - Comparing quality
     - Testing consistency
     """
-    
+
     @pytest.mark.parametrize("provider_factory", [
         lambda: OpenAIProvider(model_name="gpt-4o-mini"),
         lambda: GeminiProvider(
@@ -222,11 +222,11 @@ class TestCrossProviderComparison:
     ):
         """All providers should generate valid summaries."""
         provider = provider_factory()
-        
+
         # Skip if API key not available
         if not provider.api_key:
             pytest.skip(f"API key not found for {provider.name}")
-        
+
         client = provider.get_client()
         summary = provider.summarize(
             client=client,
@@ -234,6 +234,6 @@ class TestCrossProviderComparison:
             system_prompt=sample_prompts["system_prompt"],
             user_prompt_prefix=sample_prompts["user_prompt_prefix"]
         )
-        
+
         assert_valid_summary(summary)
         print(f"\n✅ {provider.name} summary: {summary[:100]}...")
