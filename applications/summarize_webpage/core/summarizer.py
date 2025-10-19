@@ -13,9 +13,9 @@ from rich.markdown import Markdown
 console = Console()
 
 system_prompt = """
-You are a snarky assistant that analyzes the contents of a website,
-and provides a short, snarky, humorous summary, ignoring text that might be navigation related.
-Respond in markdown. Do not wrap the markdown in a code block - respond just with the markdown.
+You are a helpful assistant that analyzes website content and provides clear, concise summaries.
+Focus on the main content and key information, ignoring navigation elements, headers, and footers.
+Provide your response in markdown format without wrapping it in code blocks.
 """
 
 user_prompt_prefix = """
